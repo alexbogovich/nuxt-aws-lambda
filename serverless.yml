@@ -1,0 +1,22 @@
+service: nuxt-aws-lambda
+
+custom:
+  secrets: ${file(secrets.json)}
+
+provider:
+  name: aws
+  runtime: nodejs8.10
+  stage: ${self:custom.secrets.NODE_ENV}
+  region: us-east-1
+  profile: ${self:custom.secrets.PROFILE}
+
+functions:
+  app:
+    handler: lambda.handler
+    events:
+      - http:
+          path: /
+          method: ANY
+
+plugins:
+  - serverless-express
